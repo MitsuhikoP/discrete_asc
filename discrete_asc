@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# copyright (c) 2021 Mitsuhiko Sato. All Rights Reserved.
+# Mitsuhiko Sato ( E-mail: mitsuhikoevolution@gmail.com )
+#coding:UTF-8
+
+def main():
+    from argparse import ArgumentParser
+    parser=ArgumentParser(description="",usage="discrete_asc -i input.asc -o output.asc -r range.tsv", epilog="")
+    parser.add_argument("-i",type=str,required=True, metavar="str",help="input asc file")
+    parser.add_argument("-o",type=str,metavar="str",help="output asc file")
+    parser.add_argument("-r",type=str,required=True, metavar="file",help="range list file of tab separated format. min\tmax ")
+    args = parser.parse_args()
+
+    range=[]
+    fhr=open(args.r, "r")
+    for line in fhr:
+        line=line.rstrip()
+        lines=line.split()
+        range.append([lines[0],lines[1]])
+    fhr.close()
+    print(range)
+    
+    fhr=open(args.i, "r")
+    out=fhr.readline()
+    out+=fhr.readline()
+    out+=fhr.readline()
+    out+=fhr.readline()
+    out+=fhr.readline()
+    line = fhr.readline()
+    out+=line
+    lines= line.rstrip().split()
+    nodata=lines[1]    
+    for line in fhr:
+        line = line.rstrip()
+        lines= line.split()
+
+        #outl=[i if i == nodata else "0.1" if float(i) < 0.1 else "0.4" if float(i) < 0.4 else "0.7" if float(i) < 0.7 else "1" for i in lines]
+        outl=lines
+        for rng in range:
+            outl=[rng[0] if float(rng[0]) <= float(i) and float(i) < float(rng[1]) else i for i in outl] 
+            #if float(rng[0]) < float(lines[1]):
+                #print(outl)
+
+        out+="\t".join(outl)+"\n"
+                
+    fhr.close()
+
+    fhw=open(args.o,"w")
+    fhw.write(out)
+    fhw.close()
+
+
+if __name__ == '__main__': main()
