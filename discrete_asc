@@ -18,7 +18,7 @@ def main():
         lines=line.split()
         range.append([lines[0],lines[1]])
     fhr.close()
-    print(range)
+    #print(range)
     
     fhr=open(args.i, "r")
     out=fhr.readline()
@@ -34,12 +34,9 @@ def main():
         line = line.rstrip()
         lines= line.split()
 
-        #outl=[i if i == nodata else "0.1" if float(i) < 0.1 else "0.4" if float(i) < 0.4 else "0.7" if float(i) < 0.7 else "1" for i in lines]
         outl=lines
         for rng in range:
             outl=[rng[0] if float(rng[0]) <= float(i) and float(i) < float(rng[1]) else i for i in outl] 
-            #if float(rng[0]) < float(lines[1]):
-                #print(outl)
 
         out+="\t".join(outl)+"\n"
                 
