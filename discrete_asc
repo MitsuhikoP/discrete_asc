@@ -36,7 +36,7 @@ def main():
 
         outl=lines
         for rng in range:
-            outl=[rng[0] if float(rng[0]) <= float(i) and float(i) < float(rng[1]) else i for i in outl] 
+            outl=[rng[1] if float(rng[0]) <= float(i) and float(i) < float(rng[1]) else i for i in outl] 
 
         out+="\t".join(outl)+"\n"
                 
